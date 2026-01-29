@@ -15,7 +15,7 @@ export default {
       encodeURIComponent(q);
 
     const api2 =
-      "https://api.x10.network/numapi.php?action=api&key=thunder&test1=" +
+      "https://api.paanel.shop/numapi.php?action=api&key=thunder&test1=" +
       encodeURIComponent(q);
 
     try {
