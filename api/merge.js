@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   }
 
   const apiUrl =
-    "https://api.paanel.shop/numapi.php?action=api&key=thunder&test1=" +
+    "https://api.paanel.shop/numapi.php?action=api&key=thunderhsfsf&test1=" +
     encodeURIComponent(q);
 
   try {
