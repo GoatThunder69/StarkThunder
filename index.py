@@ -8,7 +8,11 @@ def home():
     num = request.args.get("num")
 
     if not num:
-        return jsonify({"error": "num parameter missing"}), 400
+        return jsonify({
+            "status": False,
+            "error": "num parameter missing",
+            "usage": "/?num=9876543210"
+        }), 400
 
     url = "https://apigw.umangapp.in/ioclApi/ws1/consumervalidate"
 
@@ -53,10 +57,42 @@ def home():
     }
 
     try:
-        res = requests.post(url, headers=headers, json=payload)
-        return jsonify(res.json())
+        res = requests.post(
+            url,
+            headers=headers,
+            json=payload,
+            timeout=20
+        )
+
+        try:
+            data = res.json()
+        except:
+            return jsonify({
+                "status": False,
+                "error": "Invalid JSON response from upstream",
+                "raw": res.text
+            }), 500
+
+        return jsonify({
+            "status": True,
+            "code": res.status_code,
+            "response": data
+        })
+
+    except requests.exceptions.Timeout:
+        return jsonify({
+            "status": False,
+            "error": "Request timeout"
+        }), 504
+
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({
+            "status": False,
+            "error": str(e)
+        }), 500
+
+# Vercel ke liye
+app = app
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
